@@ -1,15 +1,15 @@
 const User = require("../models/User");
 
 module.exports = (client) => {
-    client.on('disconnect',()=>{
-        User.findOne({socketId: client.socketId}).then((user)=>{
-            if(user){
-                user.socketId = null;
-                user.save();
-            }
-            else{
-                console.log('user not found');
-            }
-        });
+  client.on("disconnect", () => {
+    console.log(client.id + " disconnected");
+    User.findOne({ socketId: client.id }).then((user) => {
+      if (user) {
+        user.socketId = null;
+        user.save();
+      } else {
+        console.log("user not found");
+      }
     });
-}
+  });
+};

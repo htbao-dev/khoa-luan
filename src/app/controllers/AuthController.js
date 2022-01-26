@@ -87,7 +87,8 @@ class AuthController {
     const { username, password, name } = req.body;
     User.findOne({ username: username })
       .then((user) => {
-        if (user) return res.status(401).json({ message: "User already exists" });
+        if (user)
+          return res.status(401).json({ message: "User already exists" });
         const newUser = new User({
           username: username,
           password: password,
@@ -111,7 +112,6 @@ class AuthController {
   }
 
   logout(req, res, next) {
-
     const refreshToken = req.body.refreshToken;
     console.log("logout refreshToken: ", refreshToken);
 
