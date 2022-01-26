@@ -1,5 +1,24 @@
 const jwt = require('jsonwebtoken');
 
+function verifyTokenSocket(accessToken){
+    let result = {statusVerify: 401, res : ''};
+    if (!accessToken) {
+        result.statusVerify = 401;
+        result.res = 'No token provided';
+    }
+    jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+        if (err) {
+            result.statusVerify = 403;
+            result.res = 'invalid token';
+        }
+        else{
+            result.statusVerify = 200;
+            result.res = 'success';
+        }
+    });
+    return result;
+}
+
 function verifyToken(req, res, next){
     const authorizationHeader = req.headers['authorization'];
     if (!authorizationHeader) {
@@ -29,4 +48,4 @@ function verifyRefreshToken(req, res, next){
     });
 }
 
-module.exports = {verifyToken, verifyRefreshToken};
+module.exports = {verifyToken, verifyRefreshToken, verifyTokenSocket};

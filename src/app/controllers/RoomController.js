@@ -1,5 +1,5 @@
 const Room = require("../models/Room");
-
+const mongoose = require("mongoose");
 class RoomController{
     createRoomByListMember(req, res, next){
         const listId = req.body.userId;
@@ -68,6 +68,9 @@ class RoomController{
     getRoomDetail(req, res, next){
         Room.findById(req.query.roomId)
             .then((room)=>{
+                room.messages.sort((a, b)=>{
+                    return b.date - a.date;
+                });
                 res.status(200).send({
                     room
                 });
